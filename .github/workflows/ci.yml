@@ -78,7 +78,7 @@ jobs:
         run: |
           mvn sonar:sonar \
             -Dsonar.projectKey=project1 \
-            -Dsonar.branch.name="${{ github.head_ref || github.ref_name }}" \
+            -Dsonar.projectVersion="${{ github.head_ref || github.ref_name }}" \
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.token="${{ secrets.SONAR_TOKEN }}" \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
