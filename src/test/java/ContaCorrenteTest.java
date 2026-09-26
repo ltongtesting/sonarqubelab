@@ -1,80 +1,42 @@
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class) @PrepareForTest(ContaCorrente.class)
 public class ContaCorrenteTest {
+
     @Test
-    public void testDepositarValorComSaldoZero() throws Exception {
-        //arrange
-        ContaCorrente contaMock =  new ContaCorrente();
-        final String METHOD="getSaldo";
+    public void testDepositarValorComSaldoZero() {
+        ContaCorrente conta = new ContaCorrente();
+        conta.setSaldo(1000.00);
 
-        ContaCorrente spy = PowerMockito.spy(contaMock);
-        PowerMockito.when(spy, METHOD)
-                .thenReturn( (Double) 1000.00);
-        double expect = 1010;
-        double actual = 0;
-        double valorDep = 10;
-        //act
-        actual = spy.depositar(valorDep);
-        //assert
-        Assert.assertEquals(expect, actual, 0);
-        PowerMockito.verifyPrivate(spy, Mockito
-                .times(1))
-                .invoke("getSaldo");
+        double resultado = conta.depositar(10);
 
+        Assert.assertEquals(1010.00, resultado, 0);
     }
 
     @Test
-    public void depositarValorPositivo(){
-        //arrange
+    public void depositarValorPositivo() {
         ContaCorrente contaCorrente = new ContaCorrente();
-        double valor = 10;
-        double esperado = 10;
-        double resultado = 0;
 
-        //act
-        resultado = contaCorrente.depositar(valor);
+        double resultado = contaCorrente.depositar(10);
 
-        //Assert
-        Assert.assertEquals(esperado, resultado, 0);
-
+        Assert.assertEquals(10, resultado, 0);
     }
 
     @Test
-    public void depositarValorNegativo(){
-        //arrange
+    public void depositarValorNegativo() {
         ContaCorrente contaCorrente = new ContaCorrente();
-        double valor = -45;
-        double esperado = 0;
-        double resultado = 0;
 
-        //act
-        resultado = contaCorrente.depositar(valor);
+        double resultado = contaCorrente.depositar(-45);
 
-        //Assert
-        Assert.assertEquals(esperado, resultado, 0);
-
+        Assert.assertEquals(0, resultado, 0);
     }
+
     @Test
-    public void depositarValorMenor10(){
-        //arrange
+    public void depositarValorMenor10() {
         ContaCorrente contaCorrente = new ContaCorrente();
-        double valor = 11;
-        double esperado = 0;
-        double resultado = 0;
 
-        //act
-        resultado = contaCorrente.depositar(valor);
+        double resultado = contaCorrente.depositar(11);
 
-        //Assert
-        Assert.assertEquals(esperado, resultado, 0);
-
+        Assert.assertEquals(0, resultado, 0);
     }
-
 }

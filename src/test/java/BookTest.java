@@ -1,58 +1,44 @@
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import static org.mockito.Mockito.*;
+import org.mockito.MockedStatic;
 
-@RunWith( PowerMockRunner.class )
-@PrepareForTest( AgaUtils.class )
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mockStatic;
+
 public class BookTest {
 
-    @Test (expected = NullPointerException.class)
-    public void testMockException(){
-        //arrange
+    @Test(expected = NullPointerException.class)
+    public void testMockException() {
+        try (MockedStatic<AgaUtils> mockedAgaUtils = mockStatic(AgaUtils.class)) {
+            mockedAgaUtils.when(() -> AgaUtils.getTextUppercase(anyString()))
+                    .thenThrow(new NullPointerException());
 
-        PowerMockito.mockStatic(AgaUtils.class);
-        BDDMockito.given(AgaUtils.getTextUppercase(any(String.class))).willThrow(new NullPointerException());
+            Book book = new Book();
 
-        Book book = new Book();
-        String exp = "TODAY IS THE DAY";
-
-        //act
-        String act = book.getTitle();
+            book.getTitle();
+        }
     }
 
     @Test
-    public void testMockObjectStatic(){
-        //arrange
-        PowerMockito.mockStatic(AgaUtils.class);
-        BDDMockito.given(AgaUtils.getTextUppercase(any(String.class))).willReturn("yesterday");
+    public void testMockObjectStatic() {
+        try (MockedStatic<AgaUtils> mockedAgaUtils = mockStatic(AgaUtils.class)) {
+            mockedAgaUtils.when(() -> AgaUtils.getTextUppercase(anyString()))
+                    .thenReturn("yesterday");
 
-        Book book = new Book();
-        String exp = "yesterday";
+            Book book = new Book();
 
-        //act
-        String act = book.getTitle();
+            String resultado = book.getTitle();
 
-        //assert
-        Assert.assertEquals(exp, act);
+            Assert.assertEquals("yesterday", resultado);
+        }
     }
-
 
     @Test
-    public void testGetTitle(){
-        //arrange
+    public void testGetTitle() {
         Book book = new Book();
-        String exp = "TODAY IS THE DAY";
 
-        //act
-        String act = book.getTitle();
+        String resultado = book.getTitle();
 
-        //assert
-        Assert.assertEquals(exp, act);
+        Assert.assertEquals("TODAY IS THE DAY", resultado);
     }
-
 }
