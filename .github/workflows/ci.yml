@@ -77,6 +77,7 @@ jobs:
       - name: Run SonarQube scan
         run: |
           mvn sonar:sonar \
+            -Dsonar.projectKey=project1 \
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.token="${{ secrets.SONAR_TOKEN }}" \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
